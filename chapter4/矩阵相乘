@@ -1,0 +1,9 @@
+# 前向传播
+W = np.random.randn(5, 10)
+X = np.random.randn(10, 3)
+D = W.dot(X)
+
+# 假设我们得到了D的梯度
+dD = np.random.randn(*D.shape) # 和D一样的尺寸
+dW = dD.dot(X.T) #.T就是对矩阵进行转置
+dX = W.T.dot(dD)

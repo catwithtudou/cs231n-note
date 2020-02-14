@@ -1,0 +1,37 @@
+# 中心差值公式（centered difference formula）
+
+
+# 下面计算权重空间中的某些随机点上，CIFAR-10损失函数的梯度：
+# 要使用上面的代码我们需要一个只有一个参数的函数
+# (在这里参数就是权重)所以也包含了X_train和Y_train
+def CIFAR10_loss_fun(W):
+  return L(X_train, Y_train, W)
+
+W = np.random.rand(10, 3073) * 0.001 # 随机权重向量
+df = eval_numerical_gradient(CIFAR10_loss_fun, W) # 得到梯度
+
+
+# 梯度告诉我们损失函数在每个维度上的斜率，以此来进行更新：
+
+loss_original = CIFAR10_loss_fun(W) # 初始损失值
+print 'original loss: %f' % (loss_original, )
+
+# 查看不同步长的效果
+for step_size_log in [-10, -9, -8, -7, -6, -5,-4,-3,-2,-1]:
+  step_size = 10 ** step_size_log
+  W_new = W - step_size * df # 权重空间中的新位置
+  loss_new = CIFAR10_loss_fun(W_new)
+  print 'for step size %f new loss: %f' % (step_size, loss_new)
+
+# 输出:
+# original loss: 2.200718
+# for step size 1.000000e-10 new loss: 2.200652
+# for step size 1.000000e-09 new loss: 2.200057
+# for step size 1.000000e-08 new loss: 2.194116
+# for step size 1.000000e-07 new loss: 2.135493
+# for step size 1.000000e-06 new loss: 1.647802
+# for step size 1.000000e-05 new loss: 2.844355
+# for step size 1.000000e-04 new loss: 25.558142
+# for step size 1.000000e-03 new loss: 254.086573
+# for step size 1.000000e-02 new loss: 2539.370888
+# for step size 1.000000e-01 new loss: 25392.214036
